@@ -1,0 +1,32 @@
+#!/usr/bin/python
+
+# Given a Moira list and a member, prints whether or not that member
+# is on the list or a sublist of that list (or a subsublist, etc.)
+
+import sys
+
+import mtree
+
+def main(list_name, member):
+    tree = mtree.MoiraTree(list_name).tree[list_name]
+    def walk(curr_tree):
+        for element in curr_tree:
+            if element == member:
+                return True
+            elif type(curr_tree[element]) is dict:
+                if walk(curr_tree[element]) is True:
+                    return True
+        return False
+    return walk(tree)
+
+if __name__ == "__main__":
+    if len(sys.argv) != 3:
+        sys.stderr.write("Usage: mquery MOIRA-LIST MEMBER\n")
+        sys.exit(2)
+    else:
+        result = main(*sys.argv[1:])
+        print result
+        if result:
+            sys.exit(0)
+        else:
+            sys.exit(1)

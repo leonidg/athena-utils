@@ -1,0 +1,12 @@
+mtree.py defines MoiraTree, which walks a Moira list tree (calling
+blanche recursively on all its elements). This data structure can then
+be used to query information about the list. Two executable scripts
+are provided:
+
+        mquery LIST-NAME MEMBER
+               prints 'True' if MEMBER is a member or submember of
+               LIST-NAME, and 'False' otherwise.
+
+        mwalk LIST-NAME
+               prints out a tree-like list of all the members and
+               submembers of the list. Handles cyclic trees.

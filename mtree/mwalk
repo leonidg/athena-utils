@@ -1,0 +1,29 @@
+#!/usr/bin/python
+
+# Prints a recursive representation of a Moira list with all of its
+# sublists
+
+import sys
+
+import mtree
+
+def main(list_name):
+    tree = mtree.MoiraTree(list_name)
+    def walk(curr_tree, level):
+        for element in curr_tree:
+            if type(curr_tree[element]) is dict:
+                print "%s* %s" % (' '*4*level, 'LIST:'+element)
+                walk(curr_tree[element], level+1)
+            else:
+                print "%s* %s" % (' '*4*level, element)
+    walk(tree.tree, level=0)
+    print "\n%d unique member%s" % (len(tree.unique_members),
+                                   "s" if len(tree.unique_members) != 1 else "")
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        sys.stderr.write("Usage: mwalk MOIRA-LIST\n")
+        sys.exit(1)
+    else:
+        main(sys.argv[1])
+        sys.exit(0)
