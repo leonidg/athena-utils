@@ -1,0 +1,41 @@
+This repository contains a number of utilities I find useful on MIT's
+Athena systems.
+
+dropbox/
+        A system for creating "semi-Public" folders for sharing data
+        with specific people. Features automatic setup for
+        cert-protected web access.
+
+fixlink
+        A simple script for removing intermediate steps in links. This
+        is particularly useful for when you have some directory
+        structure containing symlinks to /mit/... paths that you want
+        to put on the web. web.mit.edu doesn't have the /mit
+        automounter, so a file which is a symlink to /mit/foo/bar will
+        not work; fixlink will detect the intermediate
+        /mit/foo->/afs/athena.mit.edu/users/f/o/foo link and will
+        replace the original's file symlink accordingly.
+
+get-7.012-video
+        A really quick and dirty wrapper I wrote for downloading
+        videos for 7.012 (so you can play them on your own player
+        instead of online). Currently only set up for Fall 2011,
+        though it should not be hard to set up for other
+        semesters. Requires rtmpdump.
+
+mtree/
+        A simple library for quickly querying large Moira
+        lists. Provides two scripts --- one for recursively walking
+        down a tree (can deal with cycles, unlike rblanche!) and one
+        for quickly determining whether a particular user is on a
+        given list (or any sublist)
+
+temperature
+        A simple scraper for http://thefuckingweather.com. It prints
+        out the temperature to STDOUT, which makes it nice to
+        incorporate it into other software. I use it in Barnowl.
+
+wrappers/
+        A collection of really simple wrappers (so far just
+        "athrun...") for scripts in other people's lockers that I
+        nevertheless find useful.
