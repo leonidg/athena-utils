@@ -1,0 +1,24 @@
+#!/usr/bin/python
+
+# "Fixes" a symlink by making it non-recursive.  That is, if A is a
+# symlink to B and B is a symlink to C, this will make A a direct
+# symlink to C.  It does this on all levels of the directory, so if
+# /foo/bar/ is a symlink to /baz/quux/ and "a" is a symlink to
+# "/foo/bar/a", then "fixlink a" will make "a" a symlink to
+# "/bar/quux/a".
+#
+# This is particularly useful if you have a symlink to something in
+# /mit/, which you need to access from the web. web.mit.edu doesn't
+# have the /mit auto-mounter, and so any symlinks need to point to the
+# full /afs/athena.mit.edu/... path
+
+import os.path
+import sys
+
+for linkname in sys.argv[1:]:
+    if os.path.islink(linkname):
+        realpath = os.path.realpath(linkname)
+        os.unlink(linkname)
+        os.symlink(realpath, linkname)
+    else:
+        sys.stderr.write("%s: Not a link!  Skipping...\n" % (linkname,))
