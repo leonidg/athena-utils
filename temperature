@@ -28,16 +28,3 @@ sub main
         print "Data unavailable.\n";
     }
 }
-
-
-sub round
-{
-    my ($num) = @_;
-    my $floor_num = floor($num);
-    my $ceil_num = ceil($num);
-    if ($num - $floor_num < 0.5) {
-        return $floor_num;
-    } else {
-        return $ceil_num;
-    }
-}
