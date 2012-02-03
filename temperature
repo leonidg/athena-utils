@@ -1,0 +1,43 @@
+#!/usr/bin/perl
+
+# Prints the temperature by scraping http://thefuckingweather.com
+
+use strict;
+use warnings;
+use LWP::Simple;
+use POSIX qw(ceil floor);
+
+if (scalar(@ARGV) == 0) {
+    main('02142');
+} else {
+    main($ARGV[0]);
+}
+
+
+sub main
+{
+    my ($loc) = @_;
+    $loc =~ s/[^A-z0-9,. -]//g;
+    $loc =~ s/\s+/\+/g;
+    my $data = get("http://thefuckingweather.com/?zipcode=$loc");
+    if ($data =~ /(\d+)\&deg;/) {
+        my $fahrenheit = $1;
+        my $celsius = int((5/9)*(int($fahrenheit)-32));
+        print "$loc:   $fahrenheit° Fahrenheit / $celsius° Celsius\n";
+    } else {
+        print "Data unavailable.\n";
+    }
+}
+
+
+sub round
+{
+    my ($num) = @_;
+    my $floor_num = floor($num);
+    my $ceil_num = ceil($num);
+    if ($num - $floor_num < 0.5) {
+        return $floor_num;
+    } else {
+        return $ceil_num;
+    }
+}
