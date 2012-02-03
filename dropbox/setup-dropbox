@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# usage: setup
+# usage: setup-dropbox
 # 
 # Creates a dropbox repository (by default $HOME/dropbox) and sets it
 # up so that droboxes can be created in it. Requires a dropbox mailing
