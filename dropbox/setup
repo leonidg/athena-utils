@@ -1,0 +1,65 @@
+#!/bin/sh
+
+# usage: setup
+# 
+# Creates a dropbox repository (by default $HOME/dropbox) and sets it
+# up so that droboxes can be created in it. Requires a dropbox mailing
+# list (by default $USER-dropbox) to exist and be owned by $USER.
+
+ADMIN="$USER"
+
+# Figure out which dropbox list and repositories to use
+if [ "x$DROPBOXDIR" = "x" ]; then
+    DROPBOXDIR="$HOME/dropbox"
+fi
+if [ "x$DROPBOXLIST" = "x" ]; then
+    DROPBOXLIST="$ADMIN-dropbox"
+fi
+
+# Check to make sure the directory doesn't already exist
+if [ -e $DROPBOXDIR ]; then
+    echo "Error: $DROPBOXDIR exists! Exiting..." >&2
+    exit 1
+fi
+
+# Make sure $DROPBOXLIST is a group. We'll suppress STDERR but check
+# the error code; if it's 1, that means the list probably doesn't
+# exist (or has permission errors) and we can exit.
+blanche -G -NP "$DROPBOXLIST" > /dev/null 2> /dev/null
+errcode=$?
+if [ $errcode -eq 2 ]; then
+    echo "Error: blanche failed with exit code 2 (server not responding)!" >&2
+    echo "Please contact your system administrator." >&2
+    exit 1
+elif [ $errcode -eq 1 ]; then
+    echo "Error: blanche failed with exit code 1 when modifying $DROPBOXLIST" >&2
+    echo "This probably means that it doesn't exist or you don't have bits for it" >&2
+    echo "Exiting..." &>2
+    exit 1
+else
+    echo "Setting up dropbox list ($DROPBOXLIST)..."
+fi
+
+# Add $ADMIN to $DROPBOXLIST. We'll ignore errors and hope that the
+# only error at htis point would come from the admin already being on
+# the list (which is fine)
+echo "Adding $ADMIN to dropbox list ($DROPBOXLIST)..."
+blanche -a "$ADMIN" "$DROPBOXLIST" > /dev/null 2> /dev/null
+
+# Create directory and set up appropriate bits
+echo "Setting up dropbox repository ($DROPBOXDIR)..."
+mkdir "$DROPBOXDIR"
+fs sa "$DROPBOXDIR" -clear "$ADMIN" rlidkwa
+fs sa "$DROPBOXDIR" "system:$DROPBOXLIST" l
+fs sa "$DROPBOXDIR" system:expunge ld
+
+# Now set up web access
+echo "Setting up web access..."
+fs sa "$DROPBOXDIR" system:htaccess.mit rl
+htaccess="$DROPBOXDIR/.htaccess.mit"
+echo "<limit GET>" > $htaccess
+echo "require group $DROPBOXLIST" >> $htaccess
+echo "</limit>" >> $htaccess
+
+echo "Done!"
+exit 0

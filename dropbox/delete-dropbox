@@ -1,0 +1,34 @@
+#!/bin/sh
+
+# usage: delete-dropbox [person1 [person2 [...]]]
+# 
+# Deletes the dropboxes for the given users. Requires the dropbox
+# repository to exist (by default $HOME/dropbox) and a dropbox mailing
+# list to be set up (by default $USER-dropbox).
+
+ADMIN="$USER"
+# Figure out which dropbox list and repositories to use
+if [ "x$DROPBOXDIR" = "x" ]; then
+    DROPBOXDIR="$HOME/dropbox"
+fi
+if [ "x$DROPBOXLIST" = "x" ]; then
+    DROPBOXLIST="$ADMIN-dropbox"
+fi
+
+PEOPLE=$@
+for person in $PEOPLE
+do
+    echo "Deleting dropbox for $person..."
+
+    # Delete the person's dropbox
+    persondir="$DROPBOXDIR/$person"
+    echo "    Removing $person's dropbox ($persondir)"
+    rm -rf "$persondir"
+
+    # Delete the person from the dropbox list. This removes their
+    # access to the main dropbox repository
+    echo "    Removing $person from dropbox list ($DROPBOXLIST)"
+    blanche -d "$person" "$DROPBOXLIST"
+
+    echo "    Done!"
+done

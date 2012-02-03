@@ -1,0 +1,48 @@
+#!/bin/sh
+
+# usage: create-dropbox [person1 [person2 [...]]]
+# 
+# Creates a dropbox for the given users. Requires a dropbox directory
+# to exist (by default $HOME/dropbox) and a dropbox mailing list to be
+# set up (by default $USER-dropbox).
+
+ADMIN="$USER"
+# Figure out which dropbox list and repositories to use
+if [ "x$DROPBOXDIR" = "x" ]; then
+    DROPBOXDIR="$HOME/dropbox"
+fi
+if [ "x$DROPBOXLIST" = "x" ]; then
+    DROPBOXLIST="$ADMIN-dropbox"
+fi
+
+PEOPLE=$@
+for person in $PEOPLE
+do
+    echo "Creating dropbox for $person..."
+    # The $USER-dropbox list has list access to the dropbox directory
+    # and htaccess bits. This is necessary so the people can access
+    # their own directory.
+    echo "    Adding $person to dropbox list ($DROPBOXLIST)"
+    blanche -a "$person" "$DROPBOXLIST"
+
+    # Set up the person's dropbox.  They should have all bits on it
+    # except the administer bit. The administrator (i.e. you) gets
+    # that bit
+    echo "    Creating $person's dropbox ($DROPBOXDIR/$person)"
+    persondir="$DROPBOXDIR/$person"
+    mkdir "$persondir"
+    fs sa -clear "$persondir" "$person" rlidkw
+    fs sa "$persondir" "$ADMIN" rliwdka
+    fs sa "$persondir" system:expunge ld
+
+    # Set up cert-protected web access. The administrator (i.e. you)
+    # and the person get cert-protected web access.
+    echo "    Setting up web access"
+    fs sa "$persondir" system:htaccess.mit rl
+    htaccess="$persondir/.htaccess.mit"
+    echo "<limit GET>" > $htaccess
+    echo "require user $ADMIN $person" >> $htaccess
+    echo "</limit>" >> $htaccess
+
+    echo "    Done!"
+done
