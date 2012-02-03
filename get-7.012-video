@@ -1,0 +1,35 @@
+#!/usr/bin/python
+
+# Really stupid wrapper around RTMPDump to download lecture videos for
+# 7.012 for Fall 2011.
+#
+# Usage: get-7.012-video mon day
+#   (e.g get-7.012-video oct 17
+#    Saves as oct17.flv in the same directory)
+#
+# It should be possible to use this for semesters other than Fall 2011
+# (though it's not my problem anymore so I haven't tried :P). Just
+# edit the strings in the obvious places below.
+#
+# Requires rtmpdump (http://rtmpdump.mplayerhq.hu/). Precompiled
+# binaries for OS X can be found here:
+#    * Snow Leopard: http://trick77.com/2010/07/31/capture-flash-flv-streams-rtmpdump-mac-os-x/
+#    * Lion:         http://trick77.com/2011/07/30/rtmpdump-2-4-binaries-for-os-x-10-7-lion/
+
+import subprocess
+import sys
+
+def get_video_by_date(month, day):
+    server_filename = "mp4:2011/MIT-7.012-fall2011-26100_2011%s%02d-1000.f4v" % (month, day)
+    local_filename = "%s%02d.flv" % (month, day)
+    p = subprocess.Popen(["rtmpdump",
+                          "-r", "rtmp://flashsvr2.amps.ms.mit.edu:1935/7.012?ovpfv=1.1",
+                          "-a", "7.012?ovpfv=1.1",
+                          "-f", "LNX 10,1,82,76",
+                          "-W", "http://amps-web.amps.ms.mit.edu/public/courses/7/7.012/2012f/L01/AkamaiFlashPlayer.swf",
+                          "-y", server_filename,
+                          "-o", local_filename])
+    p.communicate()
+
+if __name__ == "__main__":
+    get_video_by_date(sys.argv[1], int(sys.argv[2]))
