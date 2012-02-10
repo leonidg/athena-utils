@@ -1,0 +1,37 @@
+#!/usr/bin/python
+
+# usage: eatdir dir
+
+# A simple script that takes a directory name as an argument, creates
+# that directory, and then moves all the files that are in the same
+# places as that directory into the directory. For example, if /foo/a,
+# /foo/b, and /foo/c were all files inside /foo, "eatdir /foo/d" will
+# create a directory called "d" inside /foo, and move the other files
+# there.
+
+import os, os.path
+import sys
+
+def error(msg):
+    sys.stderr.write("%s\n" % (msg,))
+
+def main(directory):
+    fullpath = os.path.abspath(directory)
+    if os.path.exists(fullpath):
+        error("error: %s exists!" % (fullpath,))
+        return 1
+    os.mkdir(fullpath)
+    containing_directory = os.path.dirname(fullpath)
+    basename = os.path.basename(fullpath)
+    for f in os.listdir(containing_directory):
+        if f in ('.', '..', basename):
+            continue
+        os.rename(os.path.join(containing_directory, f),
+                  os.path.join(fullpath, f))
+    return 0
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        error("usage: mkdirmv dir")
+    else:
+        sys.exit(main(sys.argv[1]))
