@@ -1,6 +1,12 @@
 This repository contains a number of utilities I find useful on MIT's
 Athena systems.
 
+eatdir
+        A really simple script for creating a new directory and moving
+        all adjacent files to it. Useful for e.g. creating parallel
+        versions of some directory tree (e.g. if you want to move all
+        old stuff to "spring11" so you can create a "fall11").
+
 dropbox/
         A system for creating "semi-Public" folders for sharing data
         with specific people. Features automatic setup for
