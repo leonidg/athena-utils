@@ -1,0 +1,2 @@
+#!/bin/sh
+athrun mosh_project mosh-server
