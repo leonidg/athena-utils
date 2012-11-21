@@ -13,7 +13,7 @@ storage system. For that, see http://www.dropbox.com.
 Setup
 -----
 
-To set up, you first need to create a "dropbox list" --- a moira list
+To set up, you first need to create a "dropbox list" --- a Moira list
 which will be used to keep track of who you have set up dropboxes
 for. By default, the name of this list is $USER-dropbox
 (e.g. leonidg-dropbox); if you choose something else, you should set
@@ -22,7 +22,7 @@ the environment variable $DROPBOXLIST.
 The dropboxes will all be stored in a central "dropbox repository,"
 which is a directory you should have write access to. By default, this
 is $HOME/dropbox (e.g. /mit/leonidg/dropbox); if you choose something
-else, you should set the environemnt variable $DROPBOXDIR.  **THIS
+else, you should set the environment variable $DROPBOXDIR.  **THIS
 DIRECTORY SHOULD NOT EXIST PRIOR TO SETTING UP. THE SETUP SCRIPT WILL
 ABORT IF IT DOES TO MAKE SURE YOU DON'T LOSE DATA.**
 
