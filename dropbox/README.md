@@ -1,3 +1,6 @@
+Dropbox
+=======
+
 A "dropbox" is a directory that gives isolated bits to a particular
 person. Think of it as a Public that is specific to just one person
 and that that person also has write access to. You can put a file in
@@ -7,8 +10,8 @@ cert-protected so that only they can view it online.
 There is no relationship to Dropbox(TM), the file synchronization and
 storage system. For that, see http://www.dropbox.com.
 
-
-== Setup ==
+Setup
+-----
 
 To set up, you first need to create a "dropbox list" --- a moira list
 which will be used to keep track of who you have set up dropboxes
@@ -30,7 +33,8 @@ repository, making sure the certificate-protected web access, etc. is
 set up.
 
 
-== Using ==
+Using
+-----
 
 To create a dropbox for someone, simply run "./create-dropbox
 person". You can supply multiple people to create multiple
