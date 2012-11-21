@@ -41,7 +41,7 @@ else
 fi
 
 # Add $ADMIN to $DROPBOXLIST. We'll ignore errors and hope that the
-# only error at htis point would come from the admin already being on
+# only error at this point would come from the admin already being on
 # the list (which is fine)
 echo "Adding $ADMIN to dropbox list ($DROPBOXLIST)..."
 blanche -a "$ADMIN" "$DROPBOXLIST" > /dev/null 2> /dev/null
