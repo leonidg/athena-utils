@@ -46,14 +46,14 @@ following:
   dropbox) will be able to list the names of the people who
   have dropboxes, either from the shell or the web. In the
   default setup, the web URL will be
-  http://web.mit.edu/$USER/dropbox/. The web access will be
+  https://web.mit.edu/$USER/dropbox/. The web access will be
   cert-protected and restricted to anyone on the dropbox list.
 
 * Those who have a dropbox will be able to go to their dropbox
   and create/delete/edit/etc. files there (the only thing they
   can't do is grant permission to others). They will also have
   cert-protected web access at (in the default setup)
-  http://web.mit.edu/$USER/dropbox/$person (where $USER is you
+  https://web.mit.edu/$USER/dropbox/$person (where $USER is you
   and $person is them). You will also have both shell and web
   privileges to that directory (and you will also have the
   administer bit to change permissions in the directory).
